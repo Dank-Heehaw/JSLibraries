@@ -1,0 +1,55 @@
+body {
+  font-family: Helvetica, Arial, sans-serif;
+  background: #f4f4f4;
+}
+
+.hero {
+  background: url("https://picsum.photos/1600/900?7") center/cover no-repeat;
+  color: white;
+}
+
+.title {
+  font-size: 6rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+}
+
+.subtitle {
+  font-size: 1.5rem;
+  opacity: 0.9;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.poster img {
+  border-radius: 6px;
+  transition: transform 0.4s;
+}
+
+.poster:hover img {
+  transform: scale(1.05);
+}
+
+.poster-grid {
+  column-count: 2;
+  column-gap: 1rem;
+}
+
+.poster-grid img {
+  margin-bottom: 1rem;
+  border-radius: 6px;
+}
+
+@media (min-width: 768px) {
+  .poster-grid {
+    column-count: 3;
+  }
+}
+.story {
+  background: #f0f0f0;
+}
+
+/*# sourceMappingURL=style.css.map */
