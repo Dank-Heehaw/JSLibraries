@@ -12,117 +12,94 @@
 
 <!-- fullPage -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.css"/>
-
 <!-- Lightbox -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css"/>
-
+<!-- External CSS -->
 <link rel="stylesheet" href="assets/css/style.css">
 
 </head>
 
 <body>
 
-<div id="fullpage">
+<main id="fullpage">
+  <header class="hero-controls">
+    <span class="hero-hint">Tip: refresh shuffles locations</span>
+    <div class="relative" id="heroDropdown">
+      <button
+        type="button"
+        id="heroDropdownButton"
+        class="hero-dropdown-btn"
+        aria-haspopup="menu"
+        aria-expanded="false">
+        <span id="heroDropdownLabel" class="hero-dropdown-label">Choose location</span>
+        <span class="hero-dropdown-caret" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+          </svg>
+        </span>
+      </button>
+      <div
+        id="heroDropdownMenu"
+        class="hero-dropdown-menu hidden"
+        role="menu"
+        aria-labelledby="heroDropdownButton">
+      </div>
+    </div>
+  </header>
+  <!-- Hero Section -->
+  <section class="section hero flex items-center justify-center">
+    <div class="hero-inner">
 
-<!-- HERO -->
 
-<section class="section hero flex items-center justify-center text-center">
+      <div class="hero-main text-left">
+        <p class="hero-label">
+          <span class="hero-label-word">Explore Japan</span>
+          <span class="hero-label-arrow">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+        </p>
+        <h1 class="hero-title">
+          <span class="hero-title-small">mount/</span>
+          <span class="hero-title-large">Fuji.</span>
+        </h1>
+        <p class="hero-subtitle">EVERGREEN PEAKS · NEON CITIES · ONSEN NIGHTS · CHERRY BLOSSOMS.</p>
+      </div>
 
-<div>
-<h1 class="title">JAPAN</h1>
-<p class="subtitle">Travel Posters & Destinations</p>
-</div>
+      <aside class="hero-side text-right" aria-label="Location details and seasonal copy">
+        <div class="hero-location">
+          <div class="hero-location-meta">
+            <span class="hero-location-line"></span>
+            <span class="hero-location-label">location</span>
+            <span class="hero-location-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+              </svg>
+            </span>
+          </div>
+          <div class="hero-location-text">
+            <span class="hero-location-name">Fuji-Hakone-Izu National Park</span>
+            <span class="hero-location-sub"><strong>Honshu Island, Japan</strong></span>
+          </div>
+        </div>
+        <p class="hero-side-copy">
+          雪の季節の終わり、<br>
+          ごきげんよう、<br>
+          夢のような旅路へ。
+        </p>
+        <p class="hero-jp">日本をめぐる小さな旅へ</p>
+      </aside>
 
-</section>
+      <div class="hero-scroll">
+        <p class="hero-scroll-label"><strong>Scroll down to wander</strong></p>
+      </div>
+    </div>
+  </section>
 
-<!-- DESTINATION SECTION -->
 
-<section class="section destinations">
-
-<div class="container mx-auto text-center">
-
-<h2 class="section-title">Top Destinations</h2>
-
-<div class="grid md:grid-cols-3 gap-10 mt-10">
-
-<div class="poster">
-<img src="https://picsum.photos/500/700?1">
-<h3>Tokyo</h3>
-</div>
-
-<div class="poster">
-<img src="https://picsum.photos/500/700?2">
-<h3>Kyoto</h3>
-</div>
-
-<div class="poster">
-<img src="https://picsum.photos/500/700?3">
-<h3>Hokkaido</h3>
-</div>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- POSTER GALLERY -->
-
-<section class="section gallery-section">
-
-<div class="container mx-auto">
-
-<h2 class="section-title text-center mb-12">Poster Gallery</h2>
-
-<div class="grid poster-grid">
-
-<a href="https://picsum.photos/900/1200?11" data-lightbox="posters">
-<img src="https://picsum.photos/400/600?11">
-</a>
-
-<a href="https://picsum.photos/900/1200?12" data-lightbox="posters">
-<img src="https://picsum.photos/400/600?12">
-</a>
-
-<a href="https://picsum.photos/900/1200?13" data-lightbox="posters">
-<img src="https://picsum.photos/400/600?13">
-</a>
-
-<a href="https://picsum.photos/900/1200?14" data-lightbox="posters">
-<img src="https://picsum.photos/400/600?14">
-</a>
-
-<a href="https://picsum.photos/900/1200?15" data-lightbox="posters">
-<img src="https://picsum.photos/400/600?15">
-</a>
-
-<a href="https://picsum.photos/900/1200?16" data-lightbox="posters">
-<img src="https://picsum.photos/400/600?16">
-</a>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- TRAVEL STORY -->
-
-<section class="section story flex items-center justify-center text-center">
-
-<div>
-
-<h2 class="title">Mount Fuji</h2>
-<p class="subtitle max-w-xl mx-auto mt-6">
-Japan’s most iconic landmark and a symbol of natural beauty.
-Experience stunning landscapes, cherry blossoms, and timeless culture.
-</p>
-
-</div>
-
-</section>
-
-</div>
+</main>
 
 <!-- LIBRARIES -->
 
