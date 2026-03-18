@@ -2,6 +2,7 @@
   {
     "id": "fuji-hakone-izu",
     "image": "https://image.vividjapan.travel/fuji/pixta_fuji_fujisan_image.jpeg",
+    "alt": "Mount Fuji rising above clouds in Japan",
     "name": "Fuji-Hakone-Izu National Park",
     "sub": "Honshu Island, Japan",
     "titleSmall": "mount/",
@@ -10,6 +11,7 @@
   {
     "id": "tokyo-crossing",
     "image": "https://images.unsplash.com/photo-1542051841857-5f90071e7989?auto=format&fit=crop&w=1600&q=80",
+    "alt": "Crowds at night in Shibuya Crossing Tokyo",
     "name": "Shibuya",
     "sub": ",Tokyo, Japan",
     "titleSmall": "shibuya/",
@@ -18,22 +20,25 @@
   {
     "id": "kyoto-kiyomizu",
     "image": "https://images.unsplash.com/photo-1545569341-9eb8b30979d9?auto=format&fit=crop&w=1600&q=80",
+    "alt": "View over Kyoto from Kiyomizu-dera temple",
     "name": "Higashiyama Ward ",
     "sub": "Kyoto, Japan",
     "titleSmall": "kiyomizu-dera/",
     "titleLarge": "Temple."
   },
   {
-    "id": "osaka-night",
-    "image": "https://images.unsplash.com/photo-1660308985375-bf5984ff786e?q=80&w=1121&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-    "name": "Osaka City Lights",
-    "sub": "Osaka Prefecture, Japan",
-    "titleSmall": "neon/",
+    "id": "osaka-tsutenkaku",
+    "image": "https://images.unsplash.com/photo-1760016146613-7ad82d95586d?auto=format&fit=crop&w=1600&q=80",
+    "alt": "Neon lights and Tsutenkaku Tower in Osaka",
+    "name": "Ebisuhigashi",
+    "sub": "Naniwa Ward , Osaka",
+    "titleSmall": "tsutenkaku/",
     "titleLarge": "Osaka."
   },
   {
     "id": "blue-pond",
     "image": "https://images.unsplash.com/photo-1545105511-839f4a45a030?auto=format&fit=crop&w=1600&q=80",
+    "alt": "Blue Pond Aoiike surrounded by trees in Hokkaido",
     "name": "Blue Pond (Aoiike)",
     "sub": "Biei, Hokkaido, Japan",
     "titleSmall": "shirogane/",

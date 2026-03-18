@@ -10,10 +10,12 @@
 <!-- Tailwind -->
 <script src="https://cdn.tailwindcss.com"></script>
 
+<!-- Swiper (carousel) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.2/dist/css/glide.core.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.2/dist/css/glide.theme.min.css">
+
 <!-- fullPage -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.css"/>
-<!-- Lightbox -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css"/>
 <!-- External CSS -->
 <link rel="stylesheet" href="assets/css/style.css">
 
@@ -22,17 +24,18 @@
 <body>
 
 <main id="fullpage">
+  <!-- Story Section -->
   <header class="hero-controls">
     <span class="hero-hint">Tip: refresh shuffles locations</span>
     <div class="relative" id="heroDropdown">
       <button
         type="button"
         id="heroDropdownButton"
-        class="hero-dropdown-btn"
+        class="hero-dropdown-btn dropdown-btn"
         aria-haspopup="menu"
         aria-expanded="false">
-        <span id="heroDropdownLabel" class="hero-dropdown-label">Choose location</span>
-        <span class="hero-dropdown-caret" aria-hidden="true">
+        <span id="heroDropdownLabel" class="hero-dropdown-label dropdown-label">Choose location</span>
+        <span class="hero-dropdown-caret dropdown-caret" aria-hidden="true">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
           </svg>
@@ -40,12 +43,13 @@
       </button>
       <div
         id="heroDropdownMenu"
-        class="hero-dropdown-menu hidden"
+        class="hero-dropdown-menu dropdown-menu hidden"
         role="menu"
         aria-labelledby="heroDropdownButton">
       </div>
     </div>
   </header>
+
   <!-- Hero Section -->
   <section class="section hero flex items-center justify-center">
     <div class="hero-inner">
@@ -98,18 +102,171 @@
     </div>
   </section>
 
+  <!-- Story Section -->
+  <section class="section story fp-noscroll">
+    <article class="max-w-5xl mx-auto px-6 py-16">
+      <header class="mb-10">
+        <p class="hero-label justify-center mb-4">
+          <span class="hero-label-word">Discover more of Japan</span>
+          <span class="hero-label-arrow" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+        </p>
+      </header>
 
+      <div id="storyCarousel" class="story-carousel glide">
+        <div class="glide__track" data-glide-el="track">
+          <ul id="storyCards" class="glide__slides"></ul>
+        </div>
+      </div>
+
+    </article>
+  </section>
+
+  <!-- Plan your route Section -->
+  <section class="section plan-booking fp-noscroll">
+    <article class="plan-booking-inner">
+      <div class="plan-dashboard">
+        <header class="plan-dashboard-top">
+          <p class="plan-brand">Aeroluxe Japan</p>
+          <nav class="plan-top-links" aria-label="Booking menu">
+            <a href="#">Support</a>
+            <a href="#">Favorites</a>
+            <a href="#">Search history</a>
+          </nav>
+        </header>
+
+        <form class="plan-booking-form" action="#" method="get">
+          <label class="plan-field">
+            <span class="plan-field-label">From</span>
+            <input type="text" name="from" value="Tokyo (HND)" aria-label="From airport">
+          </label>
+
+          <span class="plan-field-swap" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 7h10m0 0-3-3m3 3-3 3M17 17H7m0 0 3 3m-3-3 3-3" />
+            </svg>
+          </span>
+
+          <label class="plan-field">
+            <span class="plan-field-label">To</span>
+            <input type="text" name="to" value="Sapporo (CTS)" aria-label="To airport">
+          </label>
+
+          <label class="plan-field">
+            <span class="plan-field-label">Date</span>
+            <input type="text" name="date" value="Mar 24, 2026" aria-label="Travel date">
+          </label>
+
+          <label class="plan-field">
+            <span class="plan-field-label">Passengers</span>
+            <input type="text" name="passengers" value="2 adults" aria-label="Passengers">
+          </label>
+
+          <button type="submit" class="plan-search-btn">Search flights</button>
+        </form>
+
+        <div class="plan-dashboard-body">
+          <section class="plan-results" aria-label="Available flights">
+            <header class="plan-results-head">
+              <h3>All available flights</h3>
+              <span>12,800 flights</span>
+            </header>
+
+            <article class="plan-flight-card">
+              <div class="plan-flight-main">
+                <p class="plan-flight-name">JAL 321 · Boeing 787-9</p>
+                <p class="plan-flight-route">HND → CTS · 2h 05m · Non-stop</p>
+                <p class="plan-flight-meta">Depart 08:10 · Arrive 10:15</p>
+              </div>
+              <div class="plan-flight-price">
+                <strong>$429</strong>
+                <button type="button">Book now</button>
+              </div>
+            </article>
+
+            <article class="plan-flight-card">
+              <div class="plan-flight-main">
+                <p class="plan-flight-name">JAL 517 · Airbus A350</p>
+                <p class="plan-flight-route">HND → OKA · 2h 45m · Non-stop</p>
+                <p class="plan-flight-meta">Depart 13:40 · Arrive 16:25</p>
+              </div>
+              <div class="plan-flight-price">
+                <strong>$512</strong>
+                <button type="button">Book now</button>
+              </div>
+            </article>
+          </section>
+
+          <aside class="plan-filters" aria-label="Flight filters">
+            <h3>Filters</h3>
+            <div class="plan-filter-row"><span>Price</span><span>$200 - $900</span></div>
+            <div class="plan-filter-row"><span>Departure time</span><span>Morning</span></div>
+            <div class="plan-filter-row"><span>Arrival time</span><span>Any</span></div>
+            <div class="plan-filter-row"><span>Airline</span><span>JAL preferred</span></div>
+            <div class="plan-filter-row"><span>Cabin</span><span>Economy</span></div>
+          </aside>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="section gallery fp-noscroll">
+    <article class="gallery-shell max-w-6xl mx-auto w-full">
+      <header>
+        <p class="hero-label mb-3">
+          <span class="hero-label-word">Japan gallery wall</span>
+          <span class="hero-label-arrow" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+        </p>
+        <p class="hero-subtitle gallery-subtitle">
+          A collage inspired by Japan's contrasts: calm temples, bold cities, and mountain air.
+        </p>
+      </header>
+
+      <div id="galleryGrid" class="gallery-grid gallery-poster-grid"></div>
+    </article>
+  </section>
+
+  <!-- Footer Section -->
+  <section class="section footer-hero">
+    <footer class="footer-hero-inner">
+      <p class="hero-label mb-4">
+        <span class="hero-label-word">See you in Japan</span>
+        <span class="hero-label-arrow" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M9 7h8v8" />
+          </svg>
+        </span>
+      </p>
+      <p class="hero-subtitle footer-subtitle">
+        From mountain mornings to neon nights, your route is just starting.
+      </p>
+      <div class="footer-links">
+        <a href="#">About</a>
+        <a href="#">Destinations</a>
+        <a href="#">Contact</a>
+      </div>
+      <p class="footer-copy">&copy; 2026 Explore Japan. All rights reserved.</p>
+    </footer>
+  </section>
 </main>
+
+
 
 <!-- LIBRARIES -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullPage.js/4.0.20/fullpage.min.js"></script>
 
-<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@glidejs/glide@3.6.2/dist/glide.min.js"></script>
 
 <script src="assets/js/script.js"></script>
 

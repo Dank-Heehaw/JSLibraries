@@ -106,6 +106,208 @@ fetch("assets/data/heroLocations.json")
     // Fail silently; fallback CSS background and static text remain.
   });
 
+function renderDestinationCards(destinations) {
+  var cardsRoot = document.getElementById("storyCards");
+  if (!cardsRoot || !Array.isArray(destinations)) return;
+  var fallbackImage =
+    "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1600&q=70";
+
+  cardsRoot.innerHTML = "";
+
+  destinations.forEach(function (item) {
+    var slide = document.createElement("li");
+    slide.className = "glide__slide";
+
+    var card = document.createElement("figure");
+    card.className = "story-card";
+
+    var imageWrap = document.createElement("div");
+    imageWrap.className = "story-card-image";
+
+    var img = document.createElement("img");
+    img.src = item.image || fallbackImage;
+    img.alt = item.alt || item.title || "Destination image";
+    img.addEventListener("error", function () {
+      if (img.src !== fallbackImage) {
+        img.src = fallbackImage;
+        return;
+      }
+
+      // If fallback also fails, avoid broken-image icon/alt clipping artifacts.
+      img.style.display = "none";
+      imageWrap.style.backgroundImage = 'url("' + fallbackImage + '")';
+      imageWrap.style.backgroundSize = "cover";
+      imageWrap.style.backgroundPosition = "center";
+    });
+    imageWrap.appendChild(img);
+
+    if (item.badge) {
+      var badge = document.createElement("span");
+      badge.className = "story-card-badge";
+      badge.textContent = item.badge;
+      imageWrap.appendChild(badge);
+    }
+
+    var body = document.createElement("div");
+    body.className = "story-card-body";
+
+    var meta = document.createElement("div");
+    meta.className = "story-card-meta";
+
+    var tag = document.createElement("span");
+    tag.className = "story-card-tag";
+    tag.textContent = item.meta || "";
+    meta.appendChild(tag);
+
+    var rating = document.createElement("span");
+    rating.className = "story-card-rating";
+    rating.textContent = typeof item.rating === "number" ? item.rating.toFixed(1) : "";
+    meta.appendChild(rating);
+
+    var title = document.createElement("h3");
+    title.className = "story-card-title";
+    title.textContent = item.title || "";
+
+    var location = document.createElement("p");
+    location.className = "story-card-location";
+    location.textContent = [item.location, item.dateRange].filter(Boolean).join(" · ");
+
+    var copy = document.createElement("p");
+    copy.className = "story-card-copy";
+    copy.textContent = item.copy || "";
+
+    var footer = document.createElement("div");
+    footer.className = "story-card-footer";
+
+    var price = document.createElement("span");
+    price.className = "story-card-price";
+    price.innerHTML = "<strong>" + (item.currencySymbol || "$") + String(item.pricePerNight || "") + "</strong> night";
+
+    var cta = document.createElement("button");
+    cta.type = "button";
+    cta.className = "story-card-cta";
+    cta.textContent = "See this route";
+
+    footer.appendChild(price);
+    footer.appendChild(cta);
+
+    body.appendChild(meta);
+    body.appendChild(title);
+    body.appendChild(location);
+    body.appendChild(copy);
+    body.appendChild(footer);
+
+    card.appendChild(imageWrap);
+    card.appendChild(body);
+    slide.appendChild(card);
+    cardsRoot.appendChild(slide);
+  });
+}
+
+function renderGallery(destinations) {
+  var galleryRoot = document.getElementById("galleryGrid");
+  if (!galleryRoot || !Array.isArray(destinations)) return;
+
+  galleryRoot.innerHTML = "";
+
+  var photoSlots = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+  photoSlots.forEach(function (slot, idx) {
+    var item = destinations[idx % destinations.length];
+    var tile = document.createElement("figure");
+    tile.className = "gallery-item gallery-photo tile-" + slot;
+
+    var img = document.createElement("img");
+    img.src = item.image || "";
+    img.alt = item.alt || item.title || "Japan destination";
+    tile.appendChild(img);
+
+    galleryRoot.appendChild(tile);
+  });
+
+  var quote = document.createElement("div");
+  quote.className = "gallery-copy gallery-copy-quote";
+  quote.textContent = "From cherry blossoms to neon nights, Japan rewards every detour.";
+  galleryRoot.appendChild(quote);
+
+  var title = document.createElement("div");
+  title.className = "gallery-copy gallery-copy-title";
+  title.innerHTML = "<span>WANDER</span><span>JAPAN</span><span>2026</span>";
+  galleryRoot.appendChild(title);
+
+  var tag = document.createElement("div");
+  tag.className = "gallery-copy gallery-copy-tag";
+  tag.textContent = "TOKYO TO HOKKAIDO";
+  galleryRoot.appendChild(tag);
+
+  var leftArrow = document.createElement("button");
+  leftArrow.type = "button";
+  leftArrow.className = "gallery-nav-block gallery-nav-left";
+  leftArrow.textContent = "←";
+  galleryRoot.appendChild(leftArrow);
+
+  var rightArrow = document.createElement("button");
+  rightArrow.type = "button";
+  rightArrow.className = "gallery-nav-block gallery-nav-right";
+  rightArrow.textContent = "→";
+  galleryRoot.appendChild(rightArrow);
+
+  var credit = document.createElement("div");
+  credit.className = "gallery-copy gallery-copy-credit";
+  credit.textContent = "Explore Japan visual board";
+  galleryRoot.appendChild(credit);
+}
+
+var storyGlide = null;
+
+function initStoryCarousel() {
+  var carouselEl = document.getElementById("storyCarousel");
+  if (!carouselEl || typeof Glide === "undefined") return;
+
+  if (storyGlide) {
+    storyGlide.destroy();
+    storyGlide = null;
+  }
+
+  storyGlide = new Glide(carouselEl, {
+    type: "carousel",
+    startAt: 0,
+    perView: 3,
+    gap: 24,
+    autoplay: 1,
+    hoverpause: true,
+    animationDuration: 3200,
+    animationTimingFunc: "linear",
+    breakpoints: {
+      1100: { perView: 2 },
+      760: { perView: 1 }
+    }
+  });
+
+  storyGlide.mount();
+
+  var cards = carouselEl.querySelectorAll(".story-card");
+  cards.forEach(function (card) {
+    card.addEventListener("mouseenter", function () {
+      if (storyGlide) storyGlide.pause();
+    });
+    card.addEventListener("mouseleave", function () {
+      if (storyGlide) storyGlide.play();
+    });
+  });
+}
+
+fetch("assets/data/destinations.json")
+  .then(function (response) { return response.json(); })
+  .then(function (destinations) {
+    if (!Array.isArray(destinations) || !destinations.length) return;
+    renderDestinationCards(destinations);
+    initStoryCarousel();
+    renderGallery(destinations);
+  })
+  .catch(function () {
+    // Fail silently if destinations are missing.
+  });
+
 // fullPage scroll
 new fullpage('#fullpage', {
   autoScrolling: true,
@@ -113,19 +315,8 @@ new fullpage('#fullpage', {
   scrollOverflow: true
 });
 
-// Masonry grid
-var grid = document.querySelector('.poster-grid');
-if (grid) {
-  new Masonry(grid, {
-    itemSelector: 'a',
-    columnWidth: 'a',
-    percentPosition: true
-  });
-}
-
 // GSAP animation
 gsap.from(".hero-title-large", {
-  y: 100,
   opacity: 0,
   duration: 1.2
 });
@@ -153,9 +344,3 @@ gsap.to(".hero-scroll", {
   yoyo: true
 });
 
-gsap.from(".poster", {
-  opacity: 0,
-  y: 40,
-  stagger: .2,
-  duration: 1
-});
