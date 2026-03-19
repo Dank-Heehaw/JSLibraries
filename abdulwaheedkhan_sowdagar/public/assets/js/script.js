@@ -33,6 +33,7 @@ const isNonEmptyArray = (value) => Array.isArray(value) && value.length > 0;
 
 const fetchJson = (url) =>
   fetch(url).then((response) => {
+    // Bubble fetch failures so each caller can handle fallback UI once.
     if (!response.ok) throw new Error("Failed to fetch " + url);
     return response.json();
   });
@@ -105,7 +106,6 @@ function renderDestinationCards(destinations) {
         return;
       }
 
-      // If the fallback image also fails, use the wrapper as a final visual fallback.
       img.style.display = "none";
       imageWrap.style.backgroundImage = 'url("' + FALLBACKS.cardImage + '")';
       imageWrap.style.backgroundSize = "cover";
@@ -207,6 +207,7 @@ function renderGallery(destinations) {
     const normalized = normalizeImageUrl(image);
     if (!normalized || seenImages.has(normalized)) return;
 
+    // Prevent duplicate gallery images across hero and destination sources.
     seenImages.add(normalized);
     uniqueGalleryItems.push({
       image: normalized,
@@ -294,6 +295,7 @@ function initHeroDropdown(locations) {
   const setDropdownSelection = (idx) => {
     if (!locations[idx]) return;
 
+    // Keep dropdown label and hero visuals synchronized.
     if (dropdownLabel) dropdownLabel.textContent = getOptionLabel(locations[idx], idx);
     applyHeroChoice(locations[idx]);
     closeDropdown();
@@ -365,7 +367,7 @@ function initStoryCarousel() {
 
   state.storyGlide.mount();
 
-  // Delegate hover handling to cover original and cloned Glide slides.
+  // Use delegated events so pause/play works for Glide's cloned slides too.
   carouselEl.addEventListener("mouseover", (event) => {
     if (!state.storyGlide) return;
 
