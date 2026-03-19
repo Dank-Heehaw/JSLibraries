@@ -23,7 +23,9 @@
 
 <body>
 
-<main id="fullpage">
+<a class="skip-link" href="#fullpage">Skip to main content</a>
+
+<main id="fullpage" aria-label="Explore Japan experience sections">
   <!-- Story Section -->
   <header class="hero-controls">
     <span class="hero-hint">Tip: refresh shuffles locations</span>
@@ -51,7 +53,7 @@
   </header>
 
   <!-- Hero Section -->
-  <section class="section hero flex items-center justify-center">
+  <section class="section hero flex items-center justify-center" aria-labelledby="hero-heading">
     <div class="hero-inner">
 
 
@@ -64,7 +66,7 @@
             </svg>
           </span>
         </p>
-        <h1 class="hero-title">
+        <h1 id="hero-heading" class="hero-title">
           <span class="hero-title-small">mount/</span>
           <span class="hero-title-large">Fuji.</span>
         </h1>
@@ -103,9 +105,10 @@
   </section>
 
   <!-- Story Section -->
-  <section class="section story fp-noscroll">
+  <section class="section story fp-noscroll" aria-labelledby="story-heading">
     <article class="max-w-5xl mx-auto px-6 py-16">
       <header class="mb-10">
+        <h2 id="story-heading" class="sr-only">Discover destinations in Japan</h2>
         <p class="hero-label justify-center mb-4">
           <span class="hero-label-word">Discover more of Japan</span>
           <span class="hero-label-arrow" aria-hidden="true">
@@ -126,17 +129,39 @@
   </section>
 
   <!-- Plan your route Section -->
-  <section class="section plan-booking fp-noscroll">
+  <section class="section plan-booking fp-noscroll" aria-labelledby="plan-heading">
     <article class="plan-booking-inner">
+      <h2 id="plan-heading" class="sr-only">Plan your route with flight options</h2>
       <div class="plan-dashboard">
         <header class="plan-dashboard-top">
-          <p class="plan-brand">Aeroluxe Japan</p>
+          <div class="plan-brand-wrap">
+            <p class="plan-brand">Aeroluxe Japan</p>
+            <p class="plan-partner">
+              In partnership with
+              <span class="plan-jal-mark" aria-hidden="true"></span>
+              <span>JAL</span>
+            </p>
+          </div>
           <nav class="plan-top-links" aria-label="Booking menu">
             <a href="#">Support</a>
             <a href="#">Favorites</a>
             <a href="#">Search history</a>
           </nav>
         </header>
+
+        <section class="plan-jal-banner" aria-label="Japan Airlines collaboration">
+          <div class="plan-jal-banner-copy">
+            <p class="plan-jal-kicker">Trusted Carrier Partner</p>
+            <h3>JAL-assisted itineraries across Japan</h3>
+            <p>
+              Domestic transfers and route planning aligned with Japan Airlines service standards.
+            </p>
+          </div>
+          <div class="plan-jal-banner-mark" aria-hidden="true">
+            <span class="plan-jal-sun"></span>
+            <span class="plan-jal-route">HND → CTS · HND → OKA</span>
+          </div>
+        </section>
 
         <form class="plan-booking-form" action="#" method="get">
           <label class="plan-field">
@@ -165,7 +190,7 @@
             <input type="text" name="passengers" value="2 adults" aria-label="Passengers">
           </label>
 
-          <button type="submit" class="plan-search-btn">Search flights</button>
+          <button type="button" class="plan-search-btn">Search flights</button>
         </form>
 
         <div class="plan-dashboard-body">
@@ -202,6 +227,13 @@
 
           <aside class="plan-filters" aria-label="Flight filters">
             <h3>Filters</h3>
+            <div class="plan-jal-chip" aria-label="JAL partnership support">
+              <span class="plan-jal-chip-dot" aria-hidden="true"></span>
+              <div>
+                <p>JAL Partner Program</p>
+                <small>Priority support and smoother domestic connections.</small>
+              </div>
+            </div>
             <div class="plan-filter-row"><span>Price</span><span>$200 - $900</span></div>
             <div class="plan-filter-row"><span>Departure time</span><span>Morning</span></div>
             <div class="plan-filter-row"><span>Arrival time</span><span>Any</span></div>
@@ -214,9 +246,10 @@
   </section>
 
   <!-- Gallery Section -->
-  <section class="section gallery fp-noscroll">
+  <section class="section gallery fp-noscroll" aria-labelledby="gallery-heading">
     <article class="gallery-shell max-w-6xl mx-auto w-full">
       <header>
+        <h2 id="gallery-heading" class="sr-only">Japan travel gallery</h2>
         <p class="hero-label mb-3">
           <span class="hero-label-word">Japan gallery wall</span>
           <span class="hero-label-arrow" aria-hidden="true">
@@ -235,8 +268,9 @@
   </section>
 
   <!-- Footer Section -->
-  <section class="section footer-hero">
+  <section class="section footer-hero" aria-labelledby="footer-heading">
     <footer class="footer-hero-inner">
+      <h2 id="footer-heading" class="sr-only">Explore Japan footer</h2>
       <p class="hero-label mb-4">
         <span class="hero-label-word">See you in Japan</span>
         <span class="hero-label-arrow" aria-hidden="true">
@@ -248,15 +282,19 @@
       <p class="hero-subtitle footer-subtitle">
         From mountain mornings to neon nights, your route is just starting.
       </p>
-      <div class="footer-links">
+      <nav class="footer-links" aria-label="Footer links">
         <a href="#">About</a>
         <a href="#">Destinations</a>
         <a href="#">Contact</a>
-      </div>
+      </nav>
       <p class="footer-copy">&copy; 2026 Explore Japan. All rights reserved.</p>
     </footer>
   </section>
 </main>
+
+<noscript>
+  <p>This page uses JavaScript libraries for carousels, animations, and section scrolling.</p>
+</noscript>
 
 
 

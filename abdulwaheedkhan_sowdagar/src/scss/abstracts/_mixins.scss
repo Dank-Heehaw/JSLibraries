@@ -1,0 +1,25 @@
+@use "variables" as v;
+
+@mixin flex-row($gap: 0) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin pill($bg, $border-color: transparent, $py: v.$space-unit, $px: v.$space-unit * 2.6) {
+  background: $bg;
+  border-radius: v.$radius-pill;
+  border: 1px solid $border-color;
+  padding: $py $px;
+}
+
+@mixin glassy($bg, $border-color: v.$color-hero-border-soft) {
+  background: $bg;
+  border: 1px solid $border-color;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+@mixin clamp-font($min, $vw, $max) {
+  font-size: clamp($min, $vw, $max);
+}

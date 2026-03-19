@@ -1,0 +1,331 @@
+@use "../abstracts/variables" as v;
+@use "../abstracts/mixins" as m;
+@use "../components/dropdown";
+
+// Hero and shared hero typography used across sections.
+.hero {
+  position: relative;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: v.$color-hero-text;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, v.$color-hero-overlay-start, v.$color-hero-overlay-end);
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: v.$hero-inner-max-width;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr;
+    column-gap: v.$space-unit * 4;
+    row-gap: v.$space-unit * 5;
+    padding: 3.4rem 1rem 4rem;
+    align-items: center;
+  }
+}
+
+.hero-controls {
+  position: absolute;
+  top: v.$hero-control-offset-mobile;
+  right: v.$hero-control-side-mobile;
+  z-index: 2;
+  @include m.flex-row(0.75rem);
+
+  .hero-hint {
+    display: none;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    white-space: nowrap;
+    color: v.$color-hero-text-soft;
+    @include m.pill(rgba(15, 23, 42, 0.55), v.$color-hero-border-soft);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .hero-dropdown-btn {
+    @extend %dropdown-btn;
+
+    .hero-dropdown-label {
+      @extend %dropdown-label;
+    }
+
+    .hero-dropdown-caret {
+      @extend %dropdown-caret;
+    }
+  }
+
+  .hero-dropdown-menu {
+    @extend %dropdown-menu;
+  }
+}
+
+.hero-main {
+  letter-spacing: 0.18em;
+  max-width: 100%;
+  min-width: 0;
+
+  .hero-label {
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title {
+    margin: 0;
+    font-weight: 800;
+    line-height: 0.9;
+
+    .hero-title-small {
+      display: block;
+      font-size: 1.1rem;
+      font-weight: 600;
+      letter-spacing: 0.28em;
+      margin-bottom: 0.2rem;
+      opacity: 0.85;
+      white-space: nowrap;
+    }
+
+    .hero-title-large {
+      display: block;
+      max-width: 100%;
+      white-space: nowrap;
+      letter-spacing: 0.06em;
+      @include m.clamp-font(3.6rem, 7.5vw, 5.8rem);
+    }
+  }
+
+  .hero-subtitle {
+    margin-top: 1.5rem;
+  }
+}
+
+.hero-label {
+  @include m.flex-row(0.5rem);
+  align-items: baseline;
+  color: inherit;
+  white-space: nowrap;
+}
+
+.hero-label.justify-center {
+  justify-content: center;
+}
+
+.hero-label-word {
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  @include m.clamp-font(2.4rem, 4.2vw, 3.2rem);
+}
+
+.hero-label-arrow {
+  @include m.flex-row();
+  align-items: baseline;
+
+  svg {
+    width: 2.4em;
+    height: 2.4em;
+  }
+}
+
+.hero-subtitle {
+  max-width: 22rem;
+  font-size: 1rem;
+  text-transform: none;
+  letter-spacing: 0.04em;
+  opacity: 0.9;
+}
+
+.hero-side {
+  min-width: 0;
+  display: flex;
+  align-self: flex-start;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+
+  .hero-location {
+    align-self: flex-start;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+
+    .hero-location-line {
+      width: 7rem;
+      height: 2px;
+      margin-left: 0;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .hero-location-meta {
+      @include m.flex-row(0.6rem);
+      justify-content: flex-start;
+      font-size: 0.7rem;
+
+      .hero-location-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+        display: inline-flex;
+        flex-shrink: 0;
+        color: rgba(255, 255, 255, 0.95);
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    .hero-location-text {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.1rem;
+
+      .hero-location-label {
+        font-size: 0.6rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        opacity: 0.8;
+      }
+
+      .hero-location-name {
+        font-size: 0.85rem;
+        font-weight: 600;
+        max-width: 16rem;
+        line-height: 1.15;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        min-height: calc(2 * 1.15em);
+      }
+
+      .hero-location-sub {
+        font-size: 0.7rem;
+      }
+    }
+  }
+
+  .hero-side-copy {
+    writing-mode: horizontal-tb;
+    text-orientation: mixed;
+    max-height: none;
+    margin-left: 0;
+    line-height: 1.7;
+  }
+
+  .hero-jp {
+    font-size: 1.05rem;
+    letter-spacing: 0.2em;
+  }
+}
+
+.hero-scroll {
+  position: absolute;
+  right: 1.75rem;
+  bottom: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  text-align: right;
+  gap: 0.3rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.9;
+
+  .hero-scroll-label {
+    @include m.pill(v.$color-hero-chip);
+    font-weight: 700;
+  }
+}
+
+@media (max-width: v.$bp-sm) {
+  .hero-label {
+    white-space: normal;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+  }
+
+  .hero-label-word {
+    font-size: clamp(1.55rem, 7vw, 2.05rem);
+    line-height: 1.08;
+    letter-spacing: 0.04em;
+  }
+
+  .hero-label-arrow svg {
+    width: 1.25em;
+    height: 1.25em;
+  }
+}
+
+@media (max-width: v.$bp-xs) {
+  .hero-label-arrow {
+    display: none;
+  }
+}
+
+@media (min-width: #{v.$bp-md + 1}) {
+  .hero-controls .hero-hint {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: #{v.$bp-lg + 1}) {
+  .hero .hero-inner {
+    grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.2fr);
+    column-gap: v.$hero-inner-gap-x;
+    row-gap: v.$hero-inner-gap-y;
+    padding: 3rem 1.5rem 4.5rem;
+  }
+
+  .hero-controls {
+    top: v.$hero-control-offset-desktop;
+    right: v.$hero-control-side-desktop;
+  }
+
+  .hero-main {
+    max-width: 26rem;
+  }
+
+  .hero-side {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 1.5rem;
+
+    .hero-location {
+      align-self: flex-end;
+      text-align: right;
+
+      .hero-location-line {
+        margin-left: auto;
+      }
+
+      .hero-location-meta {
+        justify-content: flex-end;
+      }
+
+      .hero-location-text {
+        align-items: flex-end;
+      }
+    }
+
+    .hero-side-copy {
+      writing-mode: vertical-rl;
+      max-height: 17rem;
+      margin-left: auto;
+    }
+  }
+}

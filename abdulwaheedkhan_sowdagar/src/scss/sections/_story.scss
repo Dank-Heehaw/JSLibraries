@@ -1,0 +1,203 @@
+@use "../abstracts/variables" as v;
+@use "../abstracts/mixins" as m;
+
+// Story carousel and destination cards.
+.story {
+  background: v.$color-surface-muted;
+
+  .fp-overflow {
+    padding: 0.75rem 0;
+  }
+}
+
+.story-card {
+  width: min(100%, 288px);
+  min-height: 378px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow: 0 14px 10px rgba(15, 23, 42, 0.14);
+  transition: transform 0.28s ease-out, box-shadow 0.28s ease-out;
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0 20px 15px rgba(15, 23, 42, 0.2);
+  }
+}
+
+.story-carousel {
+  --story-edge-fade: clamp(2.25rem, 8vw, 6rem);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  .glide__track {
+    min-height: 450px;
+    height: auto;
+    padding: 1rem 0;
+    transform: translateZ(0);
+    will-change: transform;
+    // Fade the track content itself so edge gradients do not create seam artifacts.
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--story-edge-fade),
+      #000 calc(100% - var(--story-edge-fade)),
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to right,
+      transparent 0,
+      #000 var(--story-edge-fade),
+      #000 calc(100% - var(--story-edge-fade)),
+      transparent 100%
+    );
+  }
+
+  .glide__slides {
+    height: 100%;
+    align-items: stretch;
+    overflow: visible;
+    backface-visibility: hidden;
+  }
+
+  .glide__slide {
+    display: flex;
+    justify-content: flex-start;
+    overflow: visible;
+    backface-visibility: hidden;
+  }
+}
+
+.story-card-image {
+  position: relative;
+  height: 176px;
+  border-radius: 0.9rem;
+  overflow: hidden;
+  background: #e5e7eb;
+
+  img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transform: scale(1.02);
+    backface-visibility: hidden;
+    transition: transform 0.6s ease-out;
+  }
+
+  .story-card-badge {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    @include m.pill(rgba(15, 23, 42, 0.8), rgba(255, 255, 255, 0.35), 0.3rem, 0.9rem);
+    color: #f9fafb;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+}
+
+.story-card-body {
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.story-card-meta {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.story-card-tag {
+  font-weight: 600;
+}
+
+.story-card-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-weight: 700;
+
+  &::before {
+    content: "★";
+    color: #fbbf24;
+    font-size: 0.9rem;
+  }
+}
+
+.story-card-title {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.story-card-location {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #4b5563;
+}
+
+.story-card-copy {
+  margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #374151;
+}
+
+.story-card-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.story-card-price {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #111827;
+
+  strong {
+    font-size: 1.05rem;
+    font-weight: 700;
+  }
+}
+
+.story-card-cta {
+  @include m.pill(#111827, transparent, 0.45rem, 1rem);
+  border-radius: v.$radius-pill;
+  cursor: pointer;
+  color: #f9fafb;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow: 0 1px 5px rgba(5, 23, 12, 0.35);
+  transition: background 0.2s ease-out, transform 0.15s ease-out, box-shadow 0.2s ease-out;
+
+  &:hover {
+    background: #030712;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 5px rgba(15, 23, 12, 0.45);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 8px 6px rgba(15, 23, 42, 0.35);
+  }
+}

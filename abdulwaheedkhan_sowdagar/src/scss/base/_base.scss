@@ -1,0 +1,7 @@
+@use "../abstracts/variables" as v;
+
+// Global page baseline.
+body {
+  font-family: v.$font-body;
+  background: v.$color-page-bg;
+}

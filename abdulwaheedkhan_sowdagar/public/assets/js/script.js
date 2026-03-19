@@ -1,14 +1,55 @@
-function applyHeroChoice(choice) {
-  var heroEl = document.querySelector(".hero");
-  var nameEl = document.querySelector(".hero-location-name");
-  var subEl = document.querySelector(".hero-location-sub");
-  var titleSmallEl = document.querySelector(".hero-title-small");
-  var titleLargeEl = document.querySelector(".hero-title-large");
-  var locationBlock = document.querySelector(".hero-location");
-  var labelWord = document.querySelector(".hero-label-word");
-  var labelArrow = document.querySelector(".hero-label-arrow");
+"use strict";
 
-  if (!heroEl || !nameEl || !subEl || !choice) return;
+const PATHS = {
+  heroLocations: "assets/data/heroLocations.json",
+  destinations: "assets/data/destinations.json"
+};
+
+const SELECTORS = {
+  hero: ".hero",
+  heroLocationName: ".hero-location-name",
+  heroLocationSub: ".hero-location-sub",
+  heroTitleSmall: ".hero-title-small",
+  heroTitleLarge: ".hero-title-large",
+  heroLocation: ".hero-location",
+  heroLabelWord: ".hero-label-word",
+  heroLabelArrow: ".hero-label-arrow"
+};
+
+const FALLBACKS = {
+  cardImage: "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1600&q=70",
+  galleryAlt: "Japan destination"
+};
+
+const PHOTO_SLOTS = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
+
+const state = {
+  heroLocations: [],
+  latestDestinations: [],
+  storyGlide: null
+};
+
+const isNonEmptyArray = (value) => Array.isArray(value) && value.length > 0;
+
+const fetchJson = (url) =>
+  fetch(url).then((response) => {
+    if (!response.ok) throw new Error("Failed to fetch " + url);
+    return response.json();
+  });
+
+function applyHeroChoice(choice) {
+  if (!choice) return;
+
+  const heroEl = document.querySelector(SELECTORS.hero);
+  const nameEl = document.querySelector(SELECTORS.heroLocationName);
+  const subEl = document.querySelector(SELECTORS.heroLocationSub);
+  const titleSmallEl = document.querySelector(SELECTORS.heroTitleSmall);
+  const titleLargeEl = document.querySelector(SELECTORS.heroTitleLarge);
+  const locationBlock = document.querySelector(SELECTORS.heroLocation);
+  const labelWord = document.querySelector(SELECTORS.heroLabelWord);
+  const labelArrow = document.querySelector(SELECTORS.heroLabelArrow);
+
+  if (!heroEl || !nameEl || !subEl) return;
 
   if (choice.image) heroEl.style.backgroundImage = 'url("' + choice.image + '")';
   if (choice.name) nameEl.textContent = choice.name;
@@ -16,264 +57,303 @@ function applyHeroChoice(choice) {
   if (titleSmallEl && choice.titleSmall) titleSmallEl.textContent = choice.titleSmall;
   if (titleLargeEl && choice.titleLarge) titleLargeEl.textContent = choice.titleLarge;
 
-  if (typeof gsap !== "undefined") {
-    gsap.fromTo(
-      [labelWord, labelArrow, titleSmallEl, titleLargeEl, locationBlock],
-      { y: 10, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.45, stagger: 0.03, ease: "power2.out" }
-    );
-  }
+  if (typeof gsap === "undefined") return;
+
+  gsap.fromTo(
+    [labelWord, labelArrow, titleSmallEl, titleLargeEl, locationBlock],
+    { y: 10, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.45, stagger: 0.03, ease: "power2.out" }
+  );
 }
 
-// Load curated hero locations from JSON and sync background + text + dropdown
-fetch("assets/data/heroLocations.json")
-  .then(function (response) { return response.json(); })
-  .then(function (locations) {
-    if (!Array.isArray(locations) || !locations.length) return;
+function createPriceElement(item) {
+  const price = document.createElement("span");
+  price.className = "story-card-price";
 
-    var dropdownBtn = document.getElementById("heroDropdownButton");
-    var dropdownMenu = document.getElementById("heroDropdownMenu");
-    var dropdownLabel = document.getElementById("heroDropdownLabel");
+  const strong = document.createElement("strong");
+  strong.textContent = (item.currencySymbol || "$") + String(item.pricePerNight || "");
+  price.appendChild(strong);
+  price.append(" night");
 
-    function getOptionLabel(loc, idx) {
-      return (loc.titleLarge || loc.name || ("Location " + (idx + 1))).replace(/\.$/, "");
-    }
-
-    function closeDropdown() {
-      if (!dropdownMenu || !dropdownBtn) return;
-      dropdownMenu.classList.add("hidden");
-      dropdownBtn.setAttribute("aria-expanded", "false");
-    }
-
-    function openDropdown() {
-      if (!dropdownMenu || !dropdownBtn) return;
-      dropdownMenu.classList.remove("hidden");
-      dropdownBtn.setAttribute("aria-expanded", "true");
-    }
-
-    function toggleDropdown() {
-      if (!dropdownMenu) return;
-      if (dropdownMenu.classList.contains("hidden")) openDropdown();
-      else closeDropdown();
-    }
-
-    function setDropdownSelection(idx) {
-      if (!locations[idx]) return;
-      if (dropdownLabel) dropdownLabel.textContent = getOptionLabel(locations[idx], idx);
-      applyHeroChoice(locations[idx]);
-      closeDropdown();
-    }
-
-    if (dropdownMenu) {
-      dropdownMenu.innerHTML = "";
-      locations.forEach(function (loc, idx) {
-        var btn = document.createElement("button");
-        btn.type = "button";
-        btn.className =
-          "hero-dropdown-item w-full text-right whitespace-nowrap px-4 py-2 text-sm font-extrabold text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none";
-        btn.setAttribute("role", "menuitem");
-        btn.textContent = getOptionLabel(loc, idx);
-        btn.addEventListener("click", function () { setDropdownSelection(idx); });
-        dropdownMenu.appendChild(btn);
-      });
-    }
-
-    if (dropdownBtn) {
-      dropdownBtn.addEventListener("click", function (e) {
-        e.preventDefault();
-        toggleDropdown();
-      });
-    }
-
-    document.addEventListener("click", function (e) {
-      var root = document.getElementById("heroDropdown");
-      if (!root) return;
-      if (!root.contains(e.target)) closeDropdown();
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") closeDropdown();
-    });
-
-    var randomIndex = Math.floor(Math.random() * locations.length);
-    var choice = locations[randomIndex];
-    applyHeroChoice(choice);
-    if (dropdownLabel) dropdownLabel.textContent = getOptionLabel(choice, randomIndex);
-
-    // Optional: set initial selection via dropdown click handlers only.
-  })
-  .catch(function () {
-    // Fail silently; fallback CSS background and static text remain.
-  });
+  return price;
+}
 
 function renderDestinationCards(destinations) {
-  var cardsRoot = document.getElementById("storyCards");
+  const cardsRoot = document.getElementById("storyCards");
   if (!cardsRoot || !Array.isArray(destinations)) return;
-  var fallbackImage =
-    "https://images.unsplash.com/photo-1503899036084-c55cdd92da26?auto=format&fit=crop&w=1600&q=70";
 
   cardsRoot.innerHTML = "";
 
-  destinations.forEach(function (item) {
-    var slide = document.createElement("li");
+  destinations.forEach((item) => {
+    const slide = document.createElement("li");
     slide.className = "glide__slide";
 
-    var card = document.createElement("figure");
+    const card = document.createElement("figure");
     card.className = "story-card";
 
-    var imageWrap = document.createElement("div");
+    const imageWrap = document.createElement("div");
     imageWrap.className = "story-card-image";
 
-    var img = document.createElement("img");
-    img.src = item.image || fallbackImage;
+    const img = document.createElement("img");
+    img.src = item.image || FALLBACKS.cardImage;
     img.alt = item.alt || item.title || "Destination image";
-    img.addEventListener("error", function () {
-      if (img.src !== fallbackImage) {
-        img.src = fallbackImage;
+    img.loading = "lazy";
+    img.decoding = "async";
+    img.addEventListener("error", () => {
+      if (img.src !== FALLBACKS.cardImage) {
+        img.src = FALLBACKS.cardImage;
         return;
       }
 
-      // If fallback also fails, avoid broken-image icon/alt clipping artifacts.
+      // If the fallback image also fails, use the wrapper as a final visual fallback.
       img.style.display = "none";
-      imageWrap.style.backgroundImage = 'url("' + fallbackImage + '")';
+      imageWrap.style.backgroundImage = 'url("' + FALLBACKS.cardImage + '")';
       imageWrap.style.backgroundSize = "cover";
       imageWrap.style.backgroundPosition = "center";
     });
     imageWrap.appendChild(img);
 
     if (item.badge) {
-      var badge = document.createElement("span");
+      const badge = document.createElement("span");
       badge.className = "story-card-badge";
       badge.textContent = item.badge;
       imageWrap.appendChild(badge);
     }
 
-    var body = document.createElement("div");
+    const body = document.createElement("div");
     body.className = "story-card-body";
 
-    var meta = document.createElement("div");
+    const meta = document.createElement("div");
     meta.className = "story-card-meta";
 
-    var tag = document.createElement("span");
+    const tag = document.createElement("span");
     tag.className = "story-card-tag";
     tag.textContent = item.meta || "";
     meta.appendChild(tag);
 
-    var rating = document.createElement("span");
+    const rating = document.createElement("span");
     rating.className = "story-card-rating";
     rating.textContent = typeof item.rating === "number" ? item.rating.toFixed(1) : "";
     meta.appendChild(rating);
 
-    var title = document.createElement("h3");
+    const title = document.createElement("h3");
     title.className = "story-card-title";
     title.textContent = item.title || "";
 
-    var location = document.createElement("p");
+    const location = document.createElement("p");
     location.className = "story-card-location";
     location.textContent = [item.location, item.dateRange].filter(Boolean).join(" · ");
 
-    var copy = document.createElement("p");
+    const copy = document.createElement("p");
     copy.className = "story-card-copy";
     copy.textContent = item.copy || "";
 
-    var footer = document.createElement("div");
+    const footer = document.createElement("div");
     footer.className = "story-card-footer";
 
-    var price = document.createElement("span");
-    price.className = "story-card-price";
-    price.innerHTML = "<strong>" + (item.currencySymbol || "$") + String(item.pricePerNight || "") + "</strong> night";
-
-    var cta = document.createElement("button");
+    const cta = document.createElement("button");
     cta.type = "button";
     cta.className = "story-card-cta";
     cta.textContent = "See this route";
 
-    footer.appendChild(price);
+    footer.appendChild(createPriceElement(item));
     footer.appendChild(cta);
 
-    body.appendChild(meta);
-    body.appendChild(title);
-    body.appendChild(location);
-    body.appendChild(copy);
-    body.appendChild(footer);
-
-    card.appendChild(imageWrap);
-    card.appendChild(body);
+    body.append(meta, title, location, copy, footer);
+    card.append(imageWrap, body);
     slide.appendChild(card);
     cardsRoot.appendChild(slide);
   });
 }
 
+function normalizeImageUrl(url) {
+  return String(url || "").trim();
+}
+
+function getUniqueFallbackImage(slotIndex) {
+  return "https://source.unsplash.com/1200x1600/?japan,travel&sig=" + (slotIndex + 1);
+}
+
+function createGalleryCopyBlock(className, text) {
+  const node = document.createElement("div");
+  node.className = className;
+  node.textContent = text;
+  return node;
+}
+
+function createGalleryTitleBlock() {
+  const title = document.createElement("div");
+  title.className = "gallery-copy gallery-copy-title";
+
+  ["EXPLORE", "JAPAN", "2026"].forEach((word) => {
+    const span = document.createElement("span");
+    span.textContent = word;
+    title.appendChild(span);
+  });
+
+  return title;
+}
+
 function renderGallery(destinations) {
-  var galleryRoot = document.getElementById("galleryGrid");
+  const galleryRoot = document.getElementById("galleryGrid");
   if (!galleryRoot || !Array.isArray(destinations)) return;
 
   galleryRoot.innerHTML = "";
 
-  var photoSlots = ["a", "b", "c", "d", "e", "f", "g", "h", "i"];
-  photoSlots.forEach(function (slot, idx) {
-    var item = destinations[idx % destinations.length];
-    var tile = document.createElement("figure");
+  const uniqueGalleryItems = [];
+  const seenImages = new Set();
+
+  const appendUniqueItem = (image, alt) => {
+    const normalized = normalizeImageUrl(image);
+    if (!normalized || seenImages.has(normalized)) return;
+
+    seenImages.add(normalized);
+    uniqueGalleryItems.push({
+      image: normalized,
+      alt: alt || FALLBACKS.galleryAlt
+    });
+  };
+
+  destinations.forEach((item) => {
+    appendUniqueItem(item && item.image, item && (item.alt || item.title));
+  });
+
+  state.heroLocations.forEach((item) => {
+    appendUniqueItem(item && item.image, item && (item.alt || item.name));
+  });
+
+  PHOTO_SLOTS.forEach((slot, idx) => {
+    const item = uniqueGalleryItems[idx];
+    const image = item ? item.image : getUniqueFallbackImage(idx);
+    const alt = item ? item.alt : FALLBACKS.galleryAlt;
+
+    const tile = document.createElement("figure");
     tile.className = "gallery-item gallery-photo tile-" + slot;
 
-    var img = document.createElement("img");
-    img.src = item.image || "";
-    img.alt = item.alt || item.title || "Japan destination";
-    tile.appendChild(img);
+    const img = document.createElement("img");
+    img.src = image;
+    img.alt = alt;
+    img.loading = "lazy";
+    img.decoding = "async";
 
+    tile.appendChild(img);
     galleryRoot.appendChild(tile);
   });
 
-  var quote = document.createElement("div");
-  quote.className = "gallery-copy gallery-copy-quote";
-  quote.textContent = "From cherry blossoms to neon nights, Japan rewards every detour.";
-  galleryRoot.appendChild(quote);
+  galleryRoot.appendChild(
+    createGalleryCopyBlock(
+      "gallery-copy gallery-copy-quote",
+      "From cherry blossoms to neon nights, Japan rewards every detour."
+    )
+  );
+  galleryRoot.appendChild(createGalleryTitleBlock());
+  galleryRoot.appendChild(createGalleryCopyBlock("gallery-copy gallery-copy-tag", "FUKOKA TO HOKKAIDO"));
 
-  var title = document.createElement("div");
-  title.className = "gallery-copy gallery-copy-title";
-  title.innerHTML = "<span>WANDER</span><span>JAPAN</span><span>2026</span>";
-  galleryRoot.appendChild(title);
-
-  var tag = document.createElement("div");
-  tag.className = "gallery-copy gallery-copy-tag";
-  tag.textContent = "TOKYO TO HOKKAIDO";
-  galleryRoot.appendChild(tag);
-
-  var leftArrow = document.createElement("button");
+  const leftArrow = document.createElement("button");
   leftArrow.type = "button";
   leftArrow.className = "gallery-nav-block gallery-nav-left";
   leftArrow.textContent = "←";
   galleryRoot.appendChild(leftArrow);
 
-  var rightArrow = document.createElement("button");
+  const rightArrow = document.createElement("button");
   rightArrow.type = "button";
   rightArrow.className = "gallery-nav-block gallery-nav-right";
   rightArrow.textContent = "→";
   galleryRoot.appendChild(rightArrow);
 
-  var credit = document.createElement("div");
-  credit.className = "gallery-copy gallery-copy-credit";
-  credit.textContent = "Explore Japan visual board";
-  galleryRoot.appendChild(credit);
+  galleryRoot.appendChild(createGalleryCopyBlock("gallery-copy gallery-copy-credit", "Explore Japan visual board"));
 }
 
-var storyGlide = null;
+function initHeroDropdown(locations) {
+  const dropdownRoot = document.getElementById("heroDropdown");
+  const dropdownBtn = document.getElementById("heroDropdownButton");
+  const dropdownMenu = document.getElementById("heroDropdownMenu");
+  const dropdownLabel = document.getElementById("heroDropdownLabel");
 
-function initStoryCarousel() {
-  var carouselEl = document.getElementById("storyCarousel");
-  if (!carouselEl || typeof Glide === "undefined") return;
+  const getOptionLabel = (loc, idx) =>
+    (loc.titleLarge || loc.name || ("Location " + (idx + 1))).replace(/\.$/, "");
 
-  if (storyGlide) {
-    storyGlide.destroy();
-    storyGlide = null;
+  const closeDropdown = () => {
+    if (!dropdownMenu || !dropdownBtn) return;
+    dropdownMenu.classList.add("hidden");
+    dropdownBtn.setAttribute("aria-expanded", "false");
+  };
+
+  const openDropdown = () => {
+    if (!dropdownMenu || !dropdownBtn) return;
+    dropdownMenu.classList.remove("hidden");
+    dropdownBtn.setAttribute("aria-expanded", "true");
+  };
+
+  const toggleDropdown = () => {
+    if (!dropdownMenu) return;
+    if (dropdownMenu.classList.contains("hidden")) openDropdown();
+    else closeDropdown();
+  };
+
+  const setDropdownSelection = (idx) => {
+    if (!locations[idx]) return;
+
+    if (dropdownLabel) dropdownLabel.textContent = getOptionLabel(locations[idx], idx);
+    applyHeroChoice(locations[idx]);
+    closeDropdown();
+  };
+
+  if (dropdownMenu) {
+    dropdownMenu.innerHTML = "";
+
+    locations.forEach((loc, idx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className =
+        "hero-dropdown-item w-full text-right whitespace-nowrap px-4 py-2 text-sm font-extrabold text-white hover:bg-white/10 focus:bg-white/10 focus:outline-none";
+      btn.setAttribute("role", "menuitem");
+      btn.textContent = getOptionLabel(loc, idx);
+      btn.addEventListener("click", () => setDropdownSelection(idx));
+      dropdownMenu.appendChild(btn);
+    });
   }
 
-  storyGlide = new Glide(carouselEl, {
+  if (dropdownBtn) {
+    dropdownBtn.addEventListener("click", (event) => {
+      event.preventDefault();
+      toggleDropdown();
+    });
+  }
+
+  document.addEventListener("click", (event) => {
+    if (!dropdownRoot) return;
+    if (!dropdownRoot.contains(event.target)) closeDropdown();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeDropdown();
+  });
+
+  const randomIndex = Math.floor(Math.random() * locations.length);
+  const choice = locations[randomIndex];
+  applyHeroChoice(choice);
+  if (dropdownLabel) dropdownLabel.textContent = getOptionLabel(choice, randomIndex);
+}
+
+function initStoryCarousel() {
+  const carouselEl = document.getElementById("storyCarousel");
+  if (!carouselEl || typeof Glide === "undefined") return;
+
+  if (state.storyGlide) {
+    state.storyGlide.destroy();
+    state.storyGlide = null;
+  }
+
+  state.storyGlide = new Glide(carouselEl, {
     type: "carousel",
     startAt: 0,
     perView: 3,
     gap: 24,
-    autoplay: 1,
+    // Extra clones reduce visible blank space during loop handoff.
+    cloningRatio: 4,
+    // Keep autoplay cadence aligned with animation to avoid clone-edge flicker.
+    autoplay: 3300,
     hoverpause: true,
     animationDuration: 3200,
     animationTimingFunc: "linear",
@@ -283,64 +363,110 @@ function initStoryCarousel() {
     }
   });
 
-  storyGlide.mount();
+  state.storyGlide.mount();
 
-  var cards = carouselEl.querySelectorAll(".story-card");
-  cards.forEach(function (card) {
-    card.addEventListener("mouseenter", function () {
-      if (storyGlide) storyGlide.pause();
-    });
-    card.addEventListener("mouseleave", function () {
-      if (storyGlide) storyGlide.play();
-    });
+  // Delegate hover handling to cover original and cloned Glide slides.
+  carouselEl.addEventListener("mouseover", (event) => {
+    if (!state.storyGlide) return;
+
+    const enteredCard = event.target && event.target.closest(".story-card");
+    if (!enteredCard) return;
+
+    const from = event.relatedTarget;
+    if (from && enteredCard.contains(from)) return;
+    state.storyGlide.pause();
+  });
+
+  carouselEl.addEventListener("mouseout", (event) => {
+    if (!state.storyGlide) return;
+
+    const exitedCard = event.target && event.target.closest(".story-card");
+    if (!exitedCard) return;
+
+    const to = event.relatedTarget;
+    if (to && exitedCard.contains(to)) return;
+    if (to && carouselEl.contains(to) && to.closest(".story-card")) return;
+    state.storyGlide.play();
   });
 }
 
-fetch("assets/data/destinations.json")
-  .then(function (response) { return response.json(); })
-  .then(function (destinations) {
-    if (!Array.isArray(destinations) || !destinations.length) return;
-    renderDestinationCards(destinations);
-    initStoryCarousel();
-    renderGallery(destinations);
-  })
-  .catch(function () {
-    // Fail silently if destinations are missing.
+function initFullpageScroll() {
+  if (typeof fullpage === "undefined") return;
+
+  new fullpage("#fullpage", {
+    autoScrolling: true,
+    navigation: true,
+    scrollOverflow: true,
+    // Allow natural document scrolling on smaller screens.
+    responsiveWidth: 900
+  });
+}
+
+function initGsapAnimations() {
+  if (typeof gsap === "undefined") return;
+
+  gsap.from(".hero-title-large", {
+    opacity: 0,
+    duration: 1.2
   });
 
-// fullPage scroll
-new fullpage('#fullpage', {
-  autoScrolling: true,
-  navigation: true,
-  scrollOverflow: true
-});
+  gsap.from(".hero-subtitle", {
+    y: 30,
+    opacity: 0,
+    duration: 1,
+    delay: 0.15
+  });
 
-// GSAP animation
-gsap.from(".hero-title-large", {
-  opacity: 0,
-  duration: 1.2
-});
+  gsap.from(".hero-side", {
+    x: 40,
+    opacity: 0,
+    duration: 1,
+    delay: 0.25
+  });
 
-gsap.from(".hero-subtitle", {
-  y: 30,
-  opacity: 0,
-  duration: 1,
-  delay: .15
-});
+  gsap.to(".hero-scroll", {
+    y: 10,
+    opacity: 1,
+    duration: 1,
+    ease: "sine.inOut",
+    repeat: -1,
+    yoyo: true
+  });
+}
 
-gsap.from(".hero-side", {
-  x: 40,
-  opacity: 0,
-  duration: 1,
-  delay: .25
-});
+function loadHeroLocations() {
+  fetchJson(PATHS.heroLocations)
+    .then((locations) => {
+      if (!isNonEmptyArray(locations)) return;
 
-gsap.to(".hero-scroll", {
-  y: 10,
-  opacity: 1,
-  duration: 1,
-  ease: "sine.inOut",
-  repeat: -1,
-  yoyo: true
-});
+      state.heroLocations = locations.slice();
+      initHeroDropdown(locations);
+
+      // Re-render once hero data is available to maximize unique gallery tiles.
+      if (isNonEmptyArray(state.latestDestinations)) renderGallery(state.latestDestinations);
+    })
+    .catch(() => {
+      // Fail silently; fallback CSS background and static text remain.
+    });
+}
+
+function loadDestinations() {
+  fetchJson(PATHS.destinations)
+    .then((destinations) => {
+      if (!isNonEmptyArray(destinations)) return;
+
+      state.latestDestinations = destinations.slice();
+      renderDestinationCards(destinations);
+      initStoryCarousel();
+      renderGallery(destinations);
+    })
+    .catch(() => {
+      // Fail silently if destinations are missing.
+    });
+}
+
+loadHeroLocations();
+loadDestinations();
+initFullpageScroll();
+initGsapAnimations();
 

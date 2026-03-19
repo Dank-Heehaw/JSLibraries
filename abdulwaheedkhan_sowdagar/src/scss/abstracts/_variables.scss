@@ -1,0 +1,31 @@
+// Design tokens and layout constants.
+$font-body: Helvetica, Arial, sans-serif;
+
+$space-unit: 0.25rem;
+$radius-pill: 999px;
+$radius-soft: $space-unit * 3;
+$shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.35);
+
+$color-page-bg: #f4f4f4;
+$color-surface-muted: #f0f0f0;
+$color-hero-text: #ffffff;
+$color-hero-overlay-start: rgba(0, 0, 0, 0.5);
+$color-hero-overlay-end: rgba(0, 0, 0, 0.15);
+$color-hero-chip: rgba(15, 23, 42, 0.85);
+$color-hero-border-soft: rgba(255, 255, 255, 0.18);
+$color-hero-border-strong: rgba(255, 255, 255, 0.6);
+$color-hero-text-soft: rgba(255, 255, 255, 0.92);
+
+$hero-inner-max-width: 70rem;
+$hero-inner-gap-x: $space-unit * 20;
+$hero-inner-gap-y: $space-unit * 8;
+$hero-control-offset-mobile: $space-unit * 3.2;
+$hero-control-offset-desktop: $space-unit * 5;
+$hero-control-side-mobile: $space-unit * 3.2;
+$hero-control-side-desktop: $space-unit * 6;
+
+$bp-xs: 500px;
+$bp-sm: 600px;
+$bp-md: 640px;
+$bp-lg: 900px;
+$bp-xl: 980px;
